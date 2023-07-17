@@ -20,7 +20,7 @@ const pool = mysql.createPool({
 });
 
 // Handle registration request
-app.post('/register', (req, res) => {
+app.post('/api/v1/register', (req, res) => {
   const { name, email, password } = req.body;
 
   // Insert user data into the database
