@@ -33,7 +33,7 @@ app.post('/api/v1/register', (req, res) => {
         console.error('Error during registration:', error);
         res.status(500).json({ error: 'Registration failed' });
       } else {
-        es.status(200).json({
+        res.status(200).json({
           message: 'Registration successful',
           redirectUrl: `/dashboard?userId=${userId}&name=${encodeURIComponent(name)}`,
         });
