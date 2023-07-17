@@ -9,7 +9,7 @@ const port = 3001;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(cors());
-app.use(cors({ origin: 'https://kickervideo.vercel.app' }));
+app.use(cors());
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
