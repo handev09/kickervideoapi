@@ -32,17 +32,22 @@ app.post("/api/v1/register", (req, res) => {
         console.error("Error during registration:", error);
         res.status(500).json({ error: "Registration failed" });
       } else {
-        const userId = results.insertId; // Get the userId from the results
-        res.status(200).json({
-          message: "Registration successful",
-          redirectUrl: `/dashboard?userId=${userId}&name=${encodeURIComponent(
-            name
-          )}`,
-        });
+        if (results && results.insertId) {
+          const userId = results.insertId;
+          res.status(200).json({
+            message: "Registration successful",
+            userId: userId,
+            name: name,
+          });
+        } else {
+          console.error("No insertId found in the database results:", results);
+          res.status(500).json({ error: "Registration failed" });
+        }
       }
     }
   );
 });
+
 
 // Start the server
 app.listen(port, () => {
