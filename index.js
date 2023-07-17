@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -32,9 +32,10 @@ app.post('/api/v1/register', (req, res) => {
         console.error('Error during registration:', error);
         res.status(500).json({ error: 'Registration failed' });
       } else {
-        // res.status(200).json({ message: 'Registration successful' });
-        const userId = results.insertId;
-        res.status(200).json({ userId, name, message: 'Registration successful' });
+        es.status(200).json({
+          message: 'Registration successful',
+          redirectUrl: `/dashboard?userId=${userId}&name=${encodeURIComponent(name)}`,
+        });
       }
     }
   );
