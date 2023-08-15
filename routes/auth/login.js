@@ -76,8 +76,9 @@ router.post('/', async (req, res) => {
           if (passwordsMatch) {
             res.status(200).json({
               message: 'Login successful',
-              userId: user.id,
+              userId: user.user_id,
               name: user.name,
+              userNum: user.id
             });
           } else {
             res.status(401).json({ error: 'Invalid credentials' });
