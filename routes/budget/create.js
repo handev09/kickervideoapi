@@ -13,27 +13,27 @@ const pool = mysql.createPool({
 
 // Handle budget creation request
 router.post("/", async (req, res) => {
-  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, services } = req.body;
+  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, services, status } = req.body;
 
   try {
     // Insert budget data into the database
     pool.query(
-      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId],
+      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id, status ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId, status],
       async (error, results) => {
         if (error) {
           console.error("Error during budget creation:", error);
           res.status(500).json({ error: "Budget creation failed" });
         } else {
           if (results && results.insertId) {
-            const budgetId = results.insertId;
+            const budgetId = results.budget_id;
             
             // Insert services into the services table
             const serviceInsertPromises = services.map(async service => {
               return new Promise((resolve, reject) => {
                 pool.query(
-                  "INSERT INTO services (service_name, budget_id) VALUES (?, ?)",
-                  [service.name, budgetId],
+                  "INSERT INTO services (service_name, budget_id, description, crew, cost, markup, unit_price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                  [service.name, budgetId, service.description, service.crew, service.cost, service.markup, service.unitPrice, service.quantity, budgetId],
                   (error, serviceResults) => {
                     if (error) {
                       reject(error);

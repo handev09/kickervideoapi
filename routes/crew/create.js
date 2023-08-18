@@ -29,12 +29,13 @@ const pool = mysql.createPool({
       cost,
       markup,
       unitPrice,
+      userId
     } = req.body;
   
     try {
       // Insert crew member data into the database using promise-compatible query interface
       const result = await pool.promise().query(
-        "INSERT INTO crew_members (name, phone_number, email, address, street, state, city, zip, role, contrat_type, cost, markup, unitPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO crew_members (name, phone_number, email, address, street, state, city, zip, role, contrat_type, cost, markup, unitPrice, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           fullName,
           phone,
@@ -49,6 +50,7 @@ const pool = mysql.createPool({
           cost,
           markup,
           unitPrice,
+          userId
         ]
       );
   

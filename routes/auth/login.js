@@ -1,96 +1,60 @@
-// const express = require('express');
-// const mysql = require('mysql2');
-// const router = express.Router();
-
-// // Create a MySQL connection pool
-// const pool = mysql.createPool({
-//   host: 'kickervideo-db.cpp0rtsplxx9.eu-north-1.rds.amazonaws.com',
-//   user: 'hankis',
-//   password: 'ESYN1dqjY6mIp3kOep8y',
-//   database: 'kickervideo',
-//   connectionLimit: 10,
-// });
-
-// // Handle login request
-// router.post('/', (req, res) => {
-//   const { email, password } = req.body;
-
-//   // Check user credentials in the database
-//   pool.query(
-//     'SELECT * FROM users WHERE email = ? AND password = ?',
-//     [email, password],
-//     (error, results) => {
-//       if (error) {
-//         console.error('Error during login:', error);
-//         res.status(500).json({ error: 'Login failed' });
-//       } else {
-//         if (results.length > 0) {
-//           const user = results[0];
-//           res.status(200).json({
-//             message: 'Login successful',
-//             userId: user.id,
-//             name: user.name,
-//           });
-//         } else {
-//           res.status(401).json({ error: 'Invalid credentials' });
-//         }
-//       }
-//     }
-//   );
-// });
-
-// module.exports = router;
-
-
-const express = require('express');
-const mysql = require('mysql2');
-const bcrypt = require('bcryptjs'); // Import bcryptjs
+const express = require("express");
+const mysql = require("mysql2");
+const bcrypt = require("bcryptjs"); // Import bcryptjs
 const router = express.Router();
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
-  host: 'kickervideo-db.cpp0rtsplxx9.eu-north-1.rds.amazonaws.com',
-  user: 'hankis',
-  password: 'ESYN1dqjY6mIp3kOep8y',
-  database: 'kickervideo',
+  host: "kickervideo-db.cpp0rtsplxx9.eu-north-1.rds.amazonaws.com",
+  user: "hankis",
+  password: "ESYN1dqjY6mIp3kOep8y",
+  database: "kickervideo",
   connectionLimit: 10,
 });
 
 // Handle login request
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   try {
     // Check user credentials in the database
-    pool.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
-      if (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({ error: 'Login failed' });
-      } else {
-        if (results.length > 0) {
-          const user = results[0];
-
-          // Compare passwords using bcryptjs
-          const passwordsMatch = await bcrypt.compare(password, user.password);
-
-          if (passwordsMatch) {
-            res.status(200).json({
-              message: 'Login successful',
-              userId: user.user_id,
-              name: user.name,
-              userNum: user.id
-            });
-          } else {
-            res.status(401).json({ error: 'Invalid credentials' });
-          }
+    pool.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email],
+      async (error, results) => {
+        if (error) {
+          console.error("Error during login:", error);
+          res.status(500).json({ error: "Login failed" });
         } else {
-          res.status(401).json({ error: 'Invalid credentials' });
+          if (results.length > 0) {
+            const user = results[0];
+
+            // Compare passwords using bcryptjs
+            const passwordsMatch = await bcrypt.compare(
+              password,
+              user.password
+            );
+
+            if (passwordsMatch) {
+              res.status(200).json({
+                message: "Login successful",
+                userId: user.user_id,
+                name: user.name,
+                userNum: user.id,
+                email: user.email,
+              });
+            } else {
+              res.status(401).json({ error: "Invalid credentials" });
+            }
+          } else {
+            res.status(401).json({ error: "Invalid credentials" });
+          }
         }
       }
-    });
+    );
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ error: 'Login failed' });
+    console.error("Error during login:", error);
+    res.status(500).json({ error: "Login failed" });
   }
 });
 
