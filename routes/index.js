@@ -4,6 +4,7 @@ const router = express.Router();
 const authRoutes = require('./auth'); // Import authRoutes module
 const budgetRoutes = require('./budget'); // Import budgetRoutes module
 const crewRoutes = require('./crew'); // Import budgetRoutes module
+const expesnseRoutes = require('./expenses'); // Import budgetRoutes module
 // const budgetRoutes = require('./budgetRoutes');
 // const crewRoutes = require('./crewRoutes');
 
@@ -11,6 +12,7 @@ const crewRoutes = require('./crew'); // Import budgetRoutes module
 router.use('/auth', authRoutes);
 router.use('/budget', budgetRoutes);
 router.use('/crew', crewRoutes);
+router.use('/expense', expesnseRoutes);
 // router.use('/budgets', budgetRoutes);
 // router.use('/crew', crewRoutes);
 
