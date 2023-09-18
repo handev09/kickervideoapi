@@ -12,15 +12,15 @@ const pool = mysql.createPool({
 });
 
 router.post("/", async (req, res) => {
-  const { id, name, description, reimburse, job, cost, userId, createdAt, createdBy, status} = req.body;
+  const { id, name, description, reimburse, job, cost, userId, createdAt, createdBy, status, receipt} = req.body;
 
   try {
     // Insert crew member data into the database using promise-compatible query interface
     const result = await pool
       .promise()
       .query(
-        "INSERT INTO expenses (expense_id, expense_name, description, reimburse, job, cost, user_id, created_at, createdBy, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [id, name, description, reimburse, job, cost, userId, createdAt, createdBy, status]
+        "INSERT INTO expenses (expense_id, expense_name, description, reimburse, job, cost, user_id, created_at, createdBy, status, receipts) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [id, name, description, reimburse, job, cost, userId, createdAt, createdBy, status, receipt]
       );
 
     if (result[0].insertId) {
