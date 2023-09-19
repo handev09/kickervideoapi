@@ -13,7 +13,9 @@ const pool = mysql.createPool({
 });
 // Handle registration request
 router.post("/", async (req, res) => {
-  const { name, email, password, userId } = req.body;
+  const { name, email, password, userId, subStart, subEnd, subDays, paid, createdAt } = req.body;
+
+  console.log(subEnd)
 
   try {
     // Check if the user with the given email already exists
@@ -39,8 +41,8 @@ router.post("/", async (req, res) => {
 
       // Insert user data into the database
       pool.query(
-        "INSERT INTO users (name, email, password, user_id) VALUES (?, ?, ?, ?)",
-        [name, email, hashedPassword, userId], // Use the hashed password
+        "INSERT INTO users (name, email, password, user_id, sub_start, sub_end, sub_days, paid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [name, email, hashedPassword, userId, subStart, subEnd, subDays, paid, createdAt ], // Use the hashed password
         (error, results) => {
           if (error) {
             console.error("Error during registration:", error);
@@ -51,7 +53,7 @@ router.post("/", async (req, res) => {
               res.status(200).json({
                 message: "Registration successful",
                 userId: userId,
-                name: name,
+                name: name
               });
             } else {
               console.error(
