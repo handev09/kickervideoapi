@@ -13,14 +13,14 @@ const pool = mysql.createPool({
 
 // Handle budget creation request
 router.post("/", async (req, res) => {
-  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, services, status, attachmentsUrl } = req.body;
-  console.log(attachmentsUrl)
+  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, services, status, attachmentsUrl, budgetNumber } = req.body;
+  console.log(budgetNumber);
 
   try {
     // Insert budget data into the database
     pool.query(
-      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id, status, attachments ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId, status, attachmentsUrl],
+      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id, status, attachments, budget_numb ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId, status, attachmentsUrl, budgetNumber],
       async (error, results) => {
         if (error) {
           console.error("Error during budget creation:", error);
