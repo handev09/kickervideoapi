@@ -9,6 +9,8 @@ const subRoutes = require('./payments'); // Import budgetRoutes module
 const userRoutes = require('./user'); // Import budgetRoutes module
 const itemsRoute = require('./lineitems'); // Import budgetRoutes module
 const clientsRoute = require('./clients'); // Import budgetRoutes module
+const contactsRoute = require('./contacts'); // Import budgetRoutes module
+const budgetItemsRoute = require('./budget-items'); // Import budgetRoutes module
 // const budgetRoutes = require('./budgetRoutes');
 // const crewRoutes = require('./crewRoutes');
 
@@ -21,6 +23,8 @@ router.use('/subscription', subRoutes);
 router.use('/user', userRoutes);
 router.use('/items', itemsRoute);
 router.use('/clients', clientsRoute);
+router.use('/contacts', contactsRoute);
+router.use('/budget-items', budgetItemsRoute);
 // router.use('/budgets', budgetRoutes);
 // router.use('/crew', crewRoutes);
 

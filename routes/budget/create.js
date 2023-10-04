@@ -13,14 +13,14 @@ const pool = mysql.createPool({
 
 // Handle budget creation request
 router.post("/", async (req, res) => {
-  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, services, status, attachmentsUrl, budgetNumber } = req.body;
+  const { client, projectTitle, subtotal, total, budgetId, internalNotes, createdAt, userId, status, attachmentsUrl, budgetNumber,clientName,serviceData, tax, discount } = req.body;
   console.log(budgetNumber);
 
   try {
     // Insert budget data into the database
     pool.query(
-      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id, status, attachments, budget_numb ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId, status, attachmentsUrl, budgetNumber],
+      "INSERT INTO budgets ( budget_id, budget_name, created_at, client_name, project_title, subtotal, total, internal_notes, user_id, status, attachments, budget_numb, company_client, tax, discount ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)",
+      [budgetId, projectTitle, createdAt, client, projectTitle, subtotal, total, internalNotes, userId, status, attachmentsUrl, budgetNumber,clientName, tax, discount],
       async (error, results) => {
         if (error) {
           console.error("Error during budget creation:", error);
@@ -30,11 +30,11 @@ router.post("/", async (req, res) => {
             const budgetId = results.budget_id;
             
             // Insert services into the services table
-            const serviceInsertPromises = services.map(async service => {
+            const serviceInsertPromises = serviceData.map(async service => {
               return new Promise((resolve, reject) => {
                 pool.query(
-                  "INSERT INTO services (service_name, budget_id, description, crew, cost, markup, unit_price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                  [service.name, budgetId, service.description, service.crew, service.cost, service.markup, service.unitPrice, service.quantity, budgetId],
+                  "INSERT INTO budgetItems (item_id, item_name, budget_id, item_description, item_rate, item_cost, item_markup, item_unitPrice, item_quantity, user_id,created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                  [service.id, service.name, service.budgetId, service.description, service.item_rate, service.cost, service.markup, service.unitPrice, service.quantity, service.userId,service.createdAt],
                   (error, serviceResults) => {
                     if (error) {
                       reject(error);
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
             await Promise.all(serviceInsertPromises);
             
             res.status(200).json({
-              message: "Budget and services creation successful",
+              message: "Budget and items creation successful",
               budgetId: budgetId,
               client: client,
             });
