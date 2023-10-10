@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
       "SELECT * FROM items WHERE user_id = ?",
       [userId]
     );
-      console.log(rows)
+      // console.log(rows)
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error fetching Items:", error);

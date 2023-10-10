@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 // Handle budget creation request
 router.get("/", async (req, res) => {
   const budgetId = req.query.budgetId; // Get the user ID from the query parameters
-  console.log(budgetId)
+  // console.log(budgetId)
 
   try {
     // Query for budgets where userId matches the current user's ID
