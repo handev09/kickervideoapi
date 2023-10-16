@@ -16,6 +16,7 @@ const pool = mysql.createPool({
 
   router.post("/", async (req, res) => {
     const {
+      crewId,
       fullName,
       phone,
       email,
@@ -37,8 +38,9 @@ const pool = mysql.createPool({
     try {
       // Insert crew member data into the database using promise-compatible query interface
       const result = await pool.promise().query(
-        "INSERT INTO crew_members (name, phone_number, email, address, street, state, city, zip, role, contrat_type, cost, markup, unitPrice, user_id, profileUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO crew_members (crew_id, name, phone_number, email, address, street, state, city, zip, role, contrat_type, cost, markup, unitPrice, user_id, profileUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
+          crewId,
           fullName,
           phone,
           email,
