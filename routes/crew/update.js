@@ -29,6 +29,7 @@ router.put("/:crewId", async (req, res) => {
     unitPrice,
     userId,
     profileUrl,
+    employmentType
   } = req.body;
 
   try {
@@ -36,7 +37,7 @@ router.put("/:crewId", async (req, res) => {
     const result = await pool
       .promise()
       .query(
-        "UPDATE crew_members SET name=?, phone_number=?, email=?, address=?, street=?, state=?, city=?, zip=?, role=?, contrat_type=?, cost=?, markup=?, unitPrice=?, user_id=?, profileUrl=? WHERE crew_id=?",
+        "UPDATE crew_members SET name=?, phone_number=?, email=?, address=?, street=?, state=?, city=?, zip=?, role=?, contrat_type=?, cost=?, markup=?, unitPrice=?, user_id=?, profileUrl=?, employment_type=? WHERE crew_id=?",
         [
           fullName,
           phone,
@@ -53,6 +54,7 @@ router.put("/:crewId", async (req, res) => {
           unitPrice,
           userId,
           profileUrl,
+          employmentType,
           crewId
         ]
       );
